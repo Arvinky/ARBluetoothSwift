@@ -1,0 +1,42 @@
+/*
+注 : 本SDK借鉴了大神刘彦玮的思路 https://github.com/coolnameismy/BabyBluetooth
+介绍
+Telink_Mesh 基于Telink的芯片，由各节点相互通信，BLE单一连接上报网络信息，控制设备的模式
+详情请见.pdf文档
+设置相关扫描参数
+* 参数一:
+* 参数二:
+* 参数三: 给相应characteristic写数据,设备根据此参数决定是否相应(response)
+*    控制Telink_semi mesh中的设备过程:扫描->连接->扫描services
+*    ->订阅services中的charateristic->登陆设备
+*    登陆设备过程--->>>实际是给”00010203-0405-0607-0809-0A0B0C0D1914“写数据，在didUpdateValueForCharacteristic
+*    回调中通过设备当前Mesh信息-Mesh Name & password和相关参数获取到解密设备广播的所需要的sectionkey后
+*    获取到sectionkey后,表示登陆成功,才能对设备发送指令
+
+
+*Master收到slave的advertisementData有两个类型，一个是广播包，一个是广播相应包
+*对于广播相应包，iOS系统底层处理过，iOS9以下和9（包括9）以上返回的字段（kCBAdvDataManufacturerData）还不一样
+*iOS 8.4.1     <11021102 11116782 04000103 00000102 03040506 0708090a 0b0c0d0e 0f>;
+*iOS 9.3.5    <11021102 11116782 11021111 67820400 01030000 01020304 05060708 090a0b0c 0d0e0f>;
+解析:              110211021508c4d811021508c4d80400010500000102030405060708090a0b0c0d0e0f
+
+*广播包结构
+typedef struct{
+u16	ManufactureID;
+u16 MeshProductUUID;
+u32	MacAddress;// low 4 byte
+}ll_adv_private_t;
+extern u8 *p_adv_pri_data;
+
+*广播相应包结构->广播响应包至少大于48
+typedef struct{
+u16	ManufactureID;
+u16 MeshProductUUID;
+u32	MacAddress;// low 4 byte
+u16 ProductUUID;
+u8	status;
+u8  DeviceAddress[2];
+u8  rsv[16];
+}ll_adv_rsp_private_t;
+
+*/
