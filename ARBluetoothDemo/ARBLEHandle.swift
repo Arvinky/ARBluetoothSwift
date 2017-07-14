@@ -14,9 +14,8 @@ import UIKit
 
 
 class ARBLEHandle : NSObject ,CBCentralManagerDelegate  {
-    
-    static var handleState : ARBLEHandleState = ARBLEHandleState.ARBLEHandleStateNormal
-    static var bleState : ARBLEState = ARBLEState.ARBLEStateNormal
+    static var handleState  = ARBLEHandleState.ARBLEHandleStateNormal
+    static var bleState  = ARBLEState.ARBLEStateNormal
     var loginBuffer : [UInt8]
     var scanedLights : [ARDevice]
     var scanedLightsUUID : [String]
@@ -28,6 +27,8 @@ class ARBLEHandle : NSObject ,CBCentralManagerDelegate  {
         scanedLights = [ARDevice]()
         scanedLightsUUID = [String]()
     }
+    
+    
     
     func centralManagerDidUpdateState(_ central: CBCentralManager) {
         print(OperationQueue.current as Any)
